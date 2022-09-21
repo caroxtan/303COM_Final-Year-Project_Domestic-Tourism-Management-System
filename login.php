@@ -34,16 +34,24 @@
 					
 					
 					else if($valid){
-						$sql="SELECT * FROM user WHERE username='$username' AND password='$password' ";
+						$sql="SELECT * FROM user WHERE username='$username' AND password=MD5('$password') "; 
 						$result=mysqli_query($store,$sql);
 						$row=mysqli_fetch_array($result);
 						$username = $row['username'];
 						if(mysqli_num_rows($result)== 1)
 						{
+							if ($username == 'admin'){
 							$_SESSION['username'] = $username;
 							echo "<script>alert('Login successful!');
-								window.location='index.html'</script>";
+								window.location='adminPanel.php'</script>";
 								return true;
+							}
+							else{
+								$_SESSION['username'] = $username;
+							echo "<script>alert('Login successful!');
+								window.location='index.php'</script>";
+								return true;
+							}
 						
 						}else {
 						    echo "<script>alert('Wrong username/password combination.');
@@ -164,10 +172,20 @@
                                     <input type="text" class="form-control p-4" id="username" name="username" value= "<?php if(isset($_POST["username"])) echo $_POST["username"]; ?>" placeholder="Username"/>
                             </div>
 							<br />
-							<div class="control-group">
-                                <input type="password" class="form-control p-4" id="password" name="password" value= "<?php if(isset($_POST["password"])) echo $_POST["password"]; ?>" placeholder="Password"/>
+							<div class="form-row">
+                                <div class="control-group col-sm-11">
+                                    <input type="password" class="form-control p-4" id="password" name="password" value= "<?php if(isset($_POST["password"])) echo $_POST["password"]; ?>" placeholder="Password" />
+                                </div>
+                                <div class="control-group col-sm-1">
+								<!-- fa fa-eye is icon of the password visible -->
+								<i class="fa fa-eye" aria-hidden="true" id = "eye" onclick = "Toggle()"></i>
+                                </div>
                             </div>
 							<br />
+							<a href = "forgetPassword.php"><small>Forget Password?</small></a>
+							<!-- user who don't have the account can press the link to register-->
+							&emsp; <a href = "registerNew.php"><small>Register Here!</small></a>
+							<br /> <br />
                             <div class="text-center">
 								<input class='btn-primary py-3 px-4' type='submit' name='submitted' value='Login'/>
 								
@@ -176,6 +194,7 @@
 								<a class='btn-primary py-3 px-4' href='index.html'>Cancel</a>
                             </div>
                         </form>
+						
                     </div>
                 </div>
             </div>
