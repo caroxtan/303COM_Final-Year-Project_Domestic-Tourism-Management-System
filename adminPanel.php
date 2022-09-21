@@ -47,7 +47,7 @@
                 echo"</div>";
                 echo"<div class='col-lg-6 text-center text-lg-right'>";
                     echo"<div class='d-inline-flex align-items-center'>";
-							
+							//display username with session
 							echo"<a class='text-primary px-3' href=''><p>";
                             echo   $_SESSION['username'] ;
                         echo"</p></a>";

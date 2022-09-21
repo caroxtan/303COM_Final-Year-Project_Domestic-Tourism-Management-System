@@ -2,6 +2,7 @@
 				
 				//align center
 				include("tourismfy_database.php");
+				//start session
 				session_start();
 				//if user click submit button
 				if (isset($_POST['submitted'])) {
