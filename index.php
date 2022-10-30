@@ -52,13 +52,17 @@ include('header.php');
                 <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Destination</h6>
                 <h1>Explore Top Destination</h1>
             </div>
-			<button class="btn-primary py-3 px-4" onclick="getLocation()">Get Current Location</button>
+			<button class="btn-primary py-3 px-4" onclick="getLocation()">Nearby Places</button>
+
 			<p id="demo"></p>
+			 
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="destination-item position-relative overflow-hidden mb-2">
                         <img src="img/penang.jpg" alt="" height="200" width="350">
-                        <a class="destination-overlay text-white text-decoration-none" href="">
+						<?php
+						echo "<a class='destination-overlay text-white text-decoration-none' href='penang.php?state_ID=1'>";
+						?>
                             <h5 class="text-white">Penang</h5>
                         </a>
                     </div>
@@ -74,8 +78,10 @@ include('header.php');
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="destination-item position-relative overflow-hidden mb-2">
                         <img src="img/perak.jpg" alt="" height="200" width="350">
-                        <a class="destination-overlay text-white text-decoration-none" href="">
-                            <h5 class="text-white">Perak</h5>
+                        <?php
+						echo "<a class='destination-overlay text-white text-decoration-none' href='penang.php?state_ID=7'>";
+						?>
+                            <h5 class="text-white">Selangor</h5>
                         </a>
                     </div>
                 </div>
@@ -96,9 +102,9 @@ include('header.php');
 	}
 
 	function showPosition(position) {
-	  x.innerHTML = "Latitude: " + position.coords.latitude + 
-	  "<br>Longitude: " + position.coords.longitude;
+	  window.location='nearbyPlaces.php?lat='+position.coords.latitude+'&long='+position.coords.longitude;
 	}
+	
 
 	</script>
 
