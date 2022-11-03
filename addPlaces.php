@@ -1,25 +1,29 @@
 <?php
 	include("tourismfy_database.php");
+	session_start();
 	
 //if user click submit button
 				if (isset($_POST['submitted'])) {
 					//variables declaration
 					$place_name = $_POST['place_name'];
+					$place_description = $_POST['place_description'];
 					$place_address = $_POST['place_address'];
 					$place_phone = $_POST['place_phone'];
 					$place_longitude = $_POST['place_longitude'];
 					$place_latitude = $_POST['place_latitude'];
 					$place_embed = $_POST['place_embed'];
-					$place_picture = $_FILES['place_picture']['name'];
+					$category_id = $_POST['place_state'];
 					$state_id = $_POST['place_state'];
+					$place_picture = $_FILES['place_picture']['name'];
 					
-					
-					$$place_name = mysqli_real_escape_string($store, $place_name);
-					$$place_address = mysqli_real_escape_string($store, $place_address);
+					$place_name = mysqli_real_escape_string($store, $place_name);
+					$place_description = mysqli_real_escape_string($store, $place_description);
+					$place_address = mysqli_real_escape_string($store, $place_address);
 					$place_phone = mysqli_real_escape_string($store, $place_phone);
 					$place_longitude = mysqli_real_escape_string($store, $place_longitude);
 					$place_latitude = mysqli_real_escape_string($store, $place_latitude);
 					$place_embed = mysqli_real_escape_string($store, $place_embed);
+					$category_id = mysqli_real_escape_string($store, $category_id);
 					$state_id = mysqli_real_escape_string($store, $state_id);
 					
 					
@@ -49,20 +53,33 @@
 					$folder = 'Image/';*/
 					
 					$place_name = $_POST['place_name'];
+					$place_description = $_POST['place_description'];
 					$place_address = $_POST['place_address'];
 					$place_phone = $_POST['place_phone'];
 					$place_longitude = $_POST['place_longitude'];
 					$place_latitude = $_POST['place_latitude'];
 					$place_embed = $_POST['place_embed'];
-					$place_picture = $_FILES['place_picture']['name'];
+					$category_id = $_POST['place_category'];
 					$state_id = $_POST['place_state'];
+					$place_picture = $_FILES['place_picture']['name'];
+					
+					$username = $_SESSION['username'];
+	
+					//select all user data from database
+					$sql = "SELECT * FROM user WHERE username = '$username'";
+					$result = mysqli_query($store, $sql);
+					$row= mysqli_fetch_array($result, MYSQLI_ASSOC);
+					
+					//receive data
+					$user_id = $row['user_id'];
+					$user_role_id = $row['user_role_id'];
 					//Success combine data and display message
 					$query = mysqli_query($store, "INSERT INTO place
-						(place_name, place_address, place_phone, place_longitude, place_latitude, place_embed, place_picture, state_id) VALUES
-						('$place_name', '$place_address', '$place_phone', '$place_longitude', '$place_latitude', '$place_embed', '$place_picture', '$state_id')");
+						(user_id, user_role_id, username, category_id, place_active, place_name, place_description, place_address, place_phone, place_longitude, place_latitude, place_embed, place_picture, state_id) VALUES
+						('$user_id', '$user_role_id', '$username', '$category_id', 1, '$place_name', '$place_description', '$place_address', '$place_phone', '$place_longitude', '$place_latitude', '$place_embed', '$place_picture', '$state_id')");
 					if ($query) {
 						echo"<script>alert('Place is successfully registered!');
-							window.location='adminPanel.php'</script>";
+							window.location='merchantPanel.php'</script>";
 						}
 					else{
 						echo "<script>alert('Place is not successfully registered!');
@@ -71,8 +88,7 @@
 				}
 				}	
 		
-	session_start();
-	include('adminHeader.php');
+	include('merchantHeader.php');
 ?>
 	
 	<!-- Register Start -->
@@ -90,6 +106,10 @@
                         <form method="post"  action="addPlaces.php" enctype="multipart/form-data">
                             <div class="control-group">
                                 <input type="text" class="form-control p-4" id="place_name" name="place_name" value= "<?php if(isset($_POST["place_name"])) echo $_POST["place_name"]; ?>" style="text-transform: capitalize;" placeholder="Name" />
+                            </div>
+							<br />
+							 <div class="control-group">
+                                <input type="text" class="form-control p-4" id="place_description" name="place_description" value= "<?php if(isset($_POST["place_description"])) echo $_POST["place_description"]; ?>" style="text-transform: capitalize;" placeholder="Description" />
                             </div>
 							<br />
 							<div class="control-group">
@@ -117,6 +137,33 @@
 							    <label>Picture:</label>
                                 <input type="file" id="place_picture" name="place_picture" value= "<?php if(isset($_POST["place_picture"])) echo $_POST["place_picture"]; ?>" style="text-transform: capitalize;" placeholder="Picture" />
                             </div>
+							<br />
+							<div class="control-group">
+							<label>Category:</label>
+							<?php
+							$query = mysqli_query($store, "SELECT * "
+									. "FROM category");
+							$count = mysqli_num_rows($query);
+							?>
+							<?php
+							
+							if ($count){
+								echo "<select name='place_category'>";
+								
+								while($row = mysqli_fetch_array($query))
+                                { 
+							       echo"<option value='".$row['category_id']."'>";
+								   
+								   echo $row['category_name'];
+								   
+								   echo"</option>";
+								}
+								echo "</select>";
+							}
+							
+								
+							?>
+							</div>
 							<br />
 							<div class="control-group">
 							<label>State:</label>
