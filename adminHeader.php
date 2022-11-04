@@ -93,8 +93,9 @@
                 <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse">
                     <div class="navbar-nav ml-auto py-0">
                         <a href="adminPanel.php" class="nav-item nav-link active">Home</a>
-						 <a href="addPlaces.php" class="nav-item nav-link active">Add Places</a>
 						 <a href="merchantList.php" class="nav-item nav-link active">Merchant List</a>
+						  <a href="merchantPlaces.php" class="nav-item nav-link active">Place Application</a>
+						  <a href="userPlaces.php" class="nav-item nav-link active">Place Recommendation</a>
                     </div>
 		
                 </div>

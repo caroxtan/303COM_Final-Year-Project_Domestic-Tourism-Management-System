@@ -78,24 +78,38 @@
 						(user_id, user_role_id, username, category_id, place_active, place_name, place_description, place_address, place_phone, place_longitude, place_latitude, place_embed, place_picture, state_id) VALUES
 						('$user_id', '$user_role_id', '$username', '$category_id', 1, '$place_name', '$place_description', '$place_address', '$place_phone', '$place_longitude', '$place_latitude', '$place_embed', '$place_picture', '$state_id')");
 					if ($query) {
-						echo"<script>alert('Place is successfully registered!');
-							window.location='merchantPanel.php'</script>";
+						echo"<script>alert('Your recommendation has been submitted!');
+							window.location='index.php'</script>";
 						}
 					else{
-						echo "<script>alert('Place is not successfully registered!');
-						window.location='addPlaces.php'</script>";
+						echo "<script>alert('Your recommendationhas been submitted!');
+						window.location='recommendPlaces.php'</script>";
 					}
 				}
 				}	
 		
-	include('merchantHeader.php');
+	include('header.php');
 ?>
+	
+	<div class="container-fluid page-header">
+        <div class="container">
+            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+                <h3 class="display-4 text-white text-uppercase">Recommend Places</h3>
+                <div class="d-inline-flex text-white">
+                    <p class="m-0 text-uppercase"><a class="text-white" href="index.php">Home</a></p>
+                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                    <p class="m-0 text-uppercase">Recommend Places</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
 	
 	<!-- Register Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="text-center mb-3 pb-3">
-                <h1>Add Places</h1>
+                <h1>Recommend Places</h1>
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-8">
@@ -103,7 +117,7 @@
                         <div id="success"></div>
 					
 				
-                        <form method="post"  action="addPlaces.php" enctype="multipart/form-data">
+                        <form method="post"  action="recommendPlaces.php" enctype="multipart/form-data">
                             <div class="control-group">
                                 <input type="text" class="form-control p-4" id="place_name" name="place_name" value= "<?php if(isset($_POST["place_name"])) echo $_POST["place_name"]; ?>" style="text-transform: capitalize;" placeholder="Name" />
                             </div>
@@ -208,5 +222,5 @@
     <!-- Register End -->
 <?php
 	
-		include('merchantFooter.php');
+		include('footer.php');
 ?>
