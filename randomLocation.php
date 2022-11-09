@@ -12,14 +12,13 @@
 
 <?php
 	echo "<header class='w3-container' style='padding-top:22px'>";
-    echo "<h5><b><i class='fa fa-bullseye'></i> Nearby Places</b></h5>";
-	echo "<a href = '#' class='link' onclick='getRandLocation()'><font color='blue'>Still not sure where to go? Click to try our random location generator!</font></a>";
+    echo "<h5><b><i class='fa fa-question fa-fw'></i> Random Location Generator</b></h5>";
     echo "</header>";
 	
 	$latitude = $_GET['lat'];
 	$longitude = $_GET['long'];
 	
-	$query = mysqli_query($store, "SELECT * FROM place WHERE (((acos(sin(($latitude*pi()/180)) * sin((place_latitude*pi()/180)) + cos(($latitude*pi()/180)) * cos((place_latitude*pi()/180)) * cos((($longitude - place_longitude)*pi()/180))))*180/pi())*60*2.133) <= 8 ORDER BY place_rating DESC");
+	$query = mysqli_query($store, "SELECT * FROM place WHERE (((acos(sin(($latitude*pi()/180)) * sin((place_latitude*pi()/180)) + cos(($latitude*pi()/180)) * cos((place_latitude*pi()/180)) * cos((($longitude - place_longitude)*pi()/180))))*180/pi())*60*2.133) <= 8 ORDER BY RAND() LIMIT 1");
 	
 	$count = mysqli_num_rows($query);
 	echo "<div class='w3-row-padding'>";
@@ -104,18 +103,6 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
-
-		function getRandLocation() {
-		  if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(showRandPosition);
-		  } else { 
-			x.innerHTML = "Geolocation is not supported by this browser.";
-		  }
-		}
-
-		function showRandPosition(position) {
-		  window.location='randomLocation.php?lat='+position.coords.latitude+'&long='+position.coords.longitude;
-		}
 </script>
 
 </body>

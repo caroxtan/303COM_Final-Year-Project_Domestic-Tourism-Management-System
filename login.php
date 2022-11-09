@@ -38,13 +38,19 @@
 						$sql="SELECT * FROM user WHERE username='$username' AND password=MD5('$password') "; 
 						$result=mysqli_query($store,$sql);
 						$row=mysqli_fetch_array($result);
-						$username = $row['username'];
+						$user_role_id = $row['user_role_id'];
 						if(mysqli_num_rows($result)== 1)
 						{
-							if ($username == 'admin'){
+							if ($user_role_id == 1){
 							$_SESSION['username'] = $username;
 							echo "<script>alert('Login successful!');
 								window.location='adminPanel.php'</script>";
+								return true;
+							}
+							else if ($user_role_id == 2){
+								$_SESSION['username'] = $username;
+								echo "<script>alert('Login successful!');
+								window.location='merchantPanel.php'</script>";
 								return true;
 							}
 							else{
@@ -67,138 +73,111 @@
 ?>
 
 
-	
-	<!-- Header Start -->
-    <div class="container-fluid page-header">
-        <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-                <h3 class="display-4 text-white text-uppercase">Login</h3>
-                <div class="d-inline-flex text-white">
-                    <p class="m-0 text-uppercase"><a class="text-white" href="index.html">Home</a></p>
-                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                    <p class="m-0 text-uppercase">Login</p>
-                </div>
-            </div>
-        </div>
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-address-card"></i> Login</b></h5>
+  </header>
+
+  <div class="w3-container">
+   <form action="login.php" method="post">
+
+  <div class="container">
+    <label><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" id="username" name="username" required />
+
+    <label><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="password" name="password" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "toggle()"></i>
+    <button type="submit" name="submitted" value="Login">Login</button>
+	<input type="hidden" name="submitted" value="true"/>
+	 <a href = "register.php" class="link"><font color="blue">Register Here!</font></a>
+  </div>
+
+  <div class="container">
+    <button type="button" class="cancelbtn"><a href = "index.html" class="link">Cancel</a></button>
+    <span class="psw"><a href="forgetPassword.php" class="link">Forget Password?</a></span>
+  </div>
+</form>
+  </div>
+  <hr>
+
+  <br>
+  <div class="w3-container w3-dark-grey w3-padding-32">
+    <div class="w3-row">
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
+        <p>Language</p>
+        <p>Country</p>
+        <p>City</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-red">System</h5>
+        <p>Browser</p>
+        <p>OS</p>
+        <p>More</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-orange">Target</h5>
+        <p>Users</p>
+        <p>Active</p>
+        <p>Geo</p>
+        <p>Interests</p>
+      </div>
     </div>
-    <!-- Header End -->
+  </div>
 
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>FOOTER</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  </footer>
 
-    <!-- Register Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="text-center mb-3 pb-3">
-                <h1>Login</h1>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="contact-form bg-white" style="padding: 30px;">
-                        <div id="success"></div>
-					
-				
-                        <form method="post"  action="login.php">
-                            <div class="control-group">
-                                    <input type="text" class="form-control p-4" id="username" name="username" value= "<?php if(isset($_POST["username"])) echo $_POST["username"]; ?>" placeholder="Username"/>
-                            </div>
-							<br />
-							<div class="form-row">
-                                <div class="control-group col-sm-11">
-                                    <input type="password" class="form-control p-4" id="password" name="password" value= "<?php if(isset($_POST["password"])) echo $_POST["password"]; ?>" placeholder="Password" />
-                                </div>
-                                <div class="control-group col-sm-1">
-								<!-- fa fa-eye is icon of the password visible -->
-								<i class="fa fa-eye" aria-hidden="true" id = "eye" onclick = "Toggle()"></i>
-                                </div>
-                            </div>
-							<br />
-							<a href = "forgetPassword.php"><small>Forget Password?</small></a>
-							<!-- user who don't have the account can press the link to register-->
-							&emsp; <a href = "registerNew.php"><small>Register Here!</small></a>
-							<br /> <br />
-                            <div class="text-center">
-								<input class='btn-primary py-3 px-4' type='submit' name='submitted' value='Login'/>
-								
-								<input type='hidden' name='submitted' value='true'/>
-								&emsp;
-								<a class='btn-primary py-3 px-4' href='index.html'>Cancel</a>
-                            </div>
-                        </form>
-						
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Register End -->
-						<script> 
-						// Change the type of input to password or text 
-							function Toggle() 
-							{ 
-								var temp = document.getElementById("password"); 
-								if (temp.type === "password")
-								{ 
-									temp.type = "text"; 
-								} 
-								else 
-								{ 
-									temp.type = "password"; 
-								} 
-							} 
-							
-							function ConfirmToggle() 
-							{ 
-								var temp = document.getElementById("confirmPassword"); 
-								if (temp.type === "password")
-								{ 
-									temp.type = "text"; 
-								} 
-								else 
-								{ 
-									temp.type = "password"; 
-								} 
-							}
-							
-					</script>
+  <!-- End page content -->
+</div>
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
-        <div class="row pt-5">
-            <div class="col-lg-3 col-md-6 mb-5">
-                <a href="index.html" class="navbar-brand">
-                    <h1 class="text-primary"><span class="text-white">TOURISM</span>FY</h1>
-                </a>
-            </div>
-            
-        </div>
-    </div>
-    <div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="row">
-            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-                <p class="m-0 text-white-50">Copyright &copy; <a href="#">TOURISMY</a>. All Rights Reserved.</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
 
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
 
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+// Change the type of input to password or text 
+function toggle() 
+{ 
+	var temp = document.getElementById("password"); 
+	if (temp.type === "password")
+	{ 
+		temp.type = "text"; 
+	} 
+	else 
+	{ 
+		temp.type = "password"; 
+	} 
+} 
+</script>
 
-    <!-- Contact Javascript File -->
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
-
 </html>

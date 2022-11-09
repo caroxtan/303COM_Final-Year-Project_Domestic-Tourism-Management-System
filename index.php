@@ -1,155 +1,84 @@
 <?php
-
-include("tourismfy_database.php");
-session_start();
-
-include('header.php');
+	include('header.php');
 ?>
+		
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0">
-        <div id="header-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="w-100" src="img/malaysiaair.jpg" alt="Image" width="500" height="600">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-md-3">Tours & Travel</h4>
-                            <h1 class="display-3 text-white mb-md-4">Let's Discover Malaysia Together</h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img class="w-100" src="img/transportation.jpeg" alt="Image" width="500" height="600">
-                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                        <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase mb-md-3">Transportation</h4>
-                            <h1 class="display-3 text-white mb-md-4">Travel With Us</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
-                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                    <span class="carousel-control-prev-icon mb-n2"></span>
-                </div>
-            </a>
-            <a class="carousel-control-next" href="#header-carousel" data-slide="next">
-                <div class="btn btn-dark" style="width: 45px; height: 45px;">
-                    <span class="carousel-control-next-icon mb-n2"></span>
-                </div>
-            </a>
-        </div>
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-map-marker"></i> Places in Malaysia</b></h5>
+	<h6>Drag and drop <i class="fa fa-male"></i> to view the 360 AR street view</h6>
+  </header>
+
+   <div class="w3-container">
+	<iframe referrerpolicy="no-referrer-when-downgrade" height="800" width="100%" style="border:none;" src="https://view-awesome-table.com/-NGJbOxB4zfxxmtxshws/view"></iframe>
+  </div>
+  <hr>
+
+  
+  <br>
+  <div class="w3-container w3-dark-grey w3-padding-32">
+    <div class="w3-row">
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
+        <p>Language</p>
+        <p>Country</p>
+        <p>City</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-red">System</h5>
+        <p>Browser</p>
+        <p>OS</p>
+        <p>More</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-orange">Target</h5>
+        <p>Users</p>
+        <p>Active</p>
+        <p>Geo</p>
+        <p>Interests</p>
+      </div>
     </div>
-    <!-- Carousel End -->
-	
-	
-	
-	<!-- Destination Start -->
-    <div class="container-fluid py-5">
-        <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-                <h6 class="text-primary text-uppercase" style="letter-spacing: 5px;">Destination</h6>
-                <h1>Explore Top Destination</h1>
-            </div>
-			<button class="btn-primary py-3 px-4" onclick="getLocation()">Nearby Places</button>
+  </div>
 
-			<p id="demo"></p>
-			 
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img src="img/penang.jpg" alt="" height="200" width="350">
-						<?php
-						echo "<a class='destination-overlay text-white text-decoration-none' href='penang.php?state_ID=1'>";
-						?>
-                            <h5 class="text-white">Penang</h5>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img src="img/kl.jpg" alt="" height="200" width="350">
-                        <a class="destination-overlay text-white text-decoration-none" href="">
-                            <h5 class="text-white">Kuala Lumpur</h5>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="destination-item position-relative overflow-hidden mb-2">
-                        <img src="img/perak.jpg" alt="" height="200" width="350">
-                        <?php
-						echo "<a class='destination-overlay text-white text-decoration-none' href='penang.php?state_ID=7'>";
-						?>
-                            <h5 class="text-white">Selangor</h5>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Destination Start -->
-	
-	<script>
-	var x = document.getElementById("demo");
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-light-grey">
+    <h4>FOOTER</h4>
+    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  </footer>
 
-	function getLocation() {
-	  if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(showPosition);
-	  } else { 
-		x.innerHTML = "Geolocation is not supported by this browser.";
-	  }
-	}
+  <!-- End page content -->
+</div>
 
-	function showPosition(position) {
-	  window.location='nearbyPlaces.php?lat='+position.coords.latitude+'&long='+position.coords.longitude;
-	}
-	
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
 
-	</script>
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
 
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
-        <div class="row pt-5">
-            <div class="col-lg-3 col-md-6 mb-5">
-                <a href="index.html" class="navbar-brand">
-                    <h1 class="text-primary"><span class="text-white">TOURISM</span>FY</h1>
-                </a>
-            </div>
-            
-        </div>
-    </div>
-    <div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="row">
-            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-                <p class="m-0 text-white-50">Copyright &copy; <a href="#">TOURISMY</a>. All Rights Reserved.</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+</script>
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
 </body>
-
 </html>
+
