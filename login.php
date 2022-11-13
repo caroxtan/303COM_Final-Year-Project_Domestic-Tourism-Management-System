@@ -1,10 +1,7 @@
 <?php
-				
-				//align center
-				include("tourismfy_database.php");
-				//start session
-				session_start();
-				//if user click submit button
+
+			    include('header.php');
+			    //if user click submit button
 				if (isset($_POST['submitted'])) {
 					//variables declaration
 					$username = $_POST['username'];
@@ -68,102 +65,49 @@
 					
 					}
 				}
-				
-				include('header.php');
+   
 ?>
 
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-top:43px;">
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-address-card"></i> Login</b></h5>
   </header>
 
-  <div class="w3-container">
-   <form action="login.php" method="post">
+  <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+	  <form action="login.php" method="post">
+	   <div class="container">
+		<label><b>Username</b></label>
+		<input type="text" placeholder="Enter Username" id="username" name="username" value= "<?php if(isset($_POST["username"])) echo $_POST["username"]; ?>" required />
 
-  <div class="container">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" id="username" name="username" required />
+		<label><b>Password</b></label>
+		<input type="password" placeholder="Enter Password" id="password" name="password" value= "<?php if(isset($_POST["password"])) echo $_POST["password"]; ?>" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "toggle()"></i>
+		<button type="submit" name="submitted" value="Login">Login</button>
+		<input type="hidden" name="submitted" value="true"/>
+		 <a href = "register.php" class="link"><font color="blue">Register Here!</font></a>
+	  </div>
 
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" id="password" name="password" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "toggle()"></i>
-    <button type="submit" name="submitted" value="Login">Login</button>
-	<input type="hidden" name="submitted" value="true"/>
-	 <a href = "register.php" class="link"><font color="blue">Register Here!</font></a>
-  </div>
-
-  <div class="container">
-    <button type="button" class="cancelbtn"><a href = "index.html" class="link">Cancel</a></button>
-    <span class="psw"><a href="forgetPassword.php" class="link">Forget Password?</a></span>
-  </div>
-</form>
-  </div>
-  <hr>
-
-  <br>
-  <div class="w3-container w3-dark-grey w3-padding-32">
-    <div class="w3-row">
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-        <p>Language</p>
-        <p>Country</p>
-        <p>City</p>
+	  <div class="container">
+		<button type="button" class="cancelbtn"><a href = "index.php" class="link">Cancel</a></button>
+		<span class="psw"><a href="forgetPassword.php" class="link"><font color="blue">Forget Password?</font></a></span>
+	  </div>
+	</form>
       </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-red">System</h5>
-        <p>Browser</p>
-        <p>OS</p>
-        <p>More</p>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-orange">Target</h5>
-        <p>Users</p>
-        <p>Active</p>
-        <p>Geo</p>
-        <p>Interests</p>
+      <div class="w3-twothird">
+		<div class="picture">
+        <img src="img/Kek Lok Si.jpg" width="815" height="395" />
+		<div class="top-left"><b>Kek Lok Si Temple</b></div>
+		<div class="bottom-left"><img src="img/Kek Lok Si QR Code.png" width="95" height="95" /><b>&nbsp;<mark style="background-color: white; color: black;">Scan the QR Code to Learn More about Kek Lok Si Temple in AR</mark></b></div>
+		</div>
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  </footer>
-
-  <!-- End page content -->
-</div>
-
+  
 <script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
-
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
-
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-    overlayBg.style.display = "none";
-  } else {
-    mySidebar.style.display = 'block';
-    overlayBg.style.display = "block";
-  }
-}
-
-// Close the sidebar with the close button
-function w3_close() {
-  mySidebar.style.display = "none";
-  overlayBg.style.display = "none";
-}
-
 // Change the type of input to password or text 
 function toggle() 
 { 
@@ -179,5 +123,9 @@ function toggle()
 } 
 </script>
 
-</body>
-</html>
+
+<?php
+
+   include('footer.php');
+   
+?>

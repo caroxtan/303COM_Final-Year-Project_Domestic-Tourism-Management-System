@@ -1,99 +1,128 @@
 <style>
-.rating {
-display: flex;
-flex-direction: row-reverse;
-justify-content: center;
+*{
+    margin: 0;
+    padding: 0;
 }
-
-.rating > input{
- display:none;
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
 }
-
-.rating > label {
-position: relative;
-width: 1.1em;
-font-size: 10vw;
-color: #FFD700;
-cursor: pointer;
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
 }
-
-.rating > label::before{
-content: "\2605";
-position: absolute;
-opacity: 0;
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
 }
-
-.rating > label:hover:before,
-.rating > label:hover ~ label:before {
-opacity: 1 !important;
+.rate:not(:checked) > label:before {
+    content: '★ ';
 }
-
-.rating > input:checked ~ label:before{
-opacity:1;
+.rate > input:checked ~ label {
+    color: #ffc700;    
 }
-
-.rating:hover > input:checked ~ label:before{ 
-opacity: 0.4;
- }
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
 </style>
 
-
 <?php
-	include("tourismfy_database.php");
-	session_start();
-	
-	$username = $_SESSION['username'];
-	
-	//if user click submit button
-				if (isset($_POST['submitted'])) {
+
+				   include('header.php');
+   
+					if (isset($_POST['submitted'])) {
 					//variables declaration
 					$place_id = $_POST['place_id'];
-					$rating = $_POST['rating'];
-					$description = $_POST['description'];
-					$picture = $_FILES['picture']['name'];
-					
+					$review_rating = $_POST['review_rating'];
+					$review_type = $_POST['review_type'];
+					$review_description = $_POST['review_description'];
+					$review_picture = $_FILES['review_picture']['name'];
 					
 					$place_id = mysqli_real_escape_string($store, $place_id);
-					$username = mysqli_real_escape_string($store, $username);
-					$rating = mysqli_real_escape_string($store, $rating);
-					$description = mysqli_real_escape_string($store, $description);
+					$review_rating = mysqli_real_escape_string($store, $review_rating);
+					$review_type = mysqli_real_escape_string($store, $review_type);
+					$review_description = mysqli_real_escape_string($store, $review_description);
 					
 					
-					//if user did not fill in first name
-					if (empty($rating)) {
+					if (empty($review_rating)) {
 						//print error message in script
-						echo "<script>alert('Please enter your rating!')</script>";
+						echo "<script>alert('Please choose your rating!')</script>";
+					}
+					else if (empty($review_type)){
+						//print error message in script
+						echo "<script>alert('Please choose your review type!')</script>";
 					}
 					
 					else{
 						
-						$target = "img/".basename($_FILES['picture']['name']);
+						$target = "img/".basename($_FILES['review_picture']['name']);
 					
-						if (move_uploaded_file($_FILES['picture']['tmp_name'], $target)) {
+						if (move_uploaded_file($_FILES['review_picture']['tmp_name'], $target)) {
 							$msg = "Image uploaded successfully";
 						}else{
 						$msg = "There was a problem uploading image";
 						}
 						
 						date_default_timezone_set("Asia/Kuala_Lumpur");
-					    $datetime = date('Y-m-d H:i:sa');
+					    $review_datetime = date('Y-m-d H:i:sa');
+					
+						$username = $_SESSION['username'];
+	
+						//select all user data from database
+						$sql = "SELECT * FROM user WHERE username = '$username'";
+						$result = mysqli_query($store, $sql);
+						$row= mysqli_fetch_array($result, MYSQLI_ASSOC);
+						
+						//receive data
+						$user_id = $row['user_id'];
 						
 						$place_id = $_POST['place_id'];
-						$rating = $_POST['rating'];
-						$description = $_POST['description'];
-						$picture = $_FILES['picture']['name'];
+						$review_rating = $_POST['review_rating'];
+						$review_type = $_POST['review_type'];
+						$review_description = $_POST['review_description'];
+						$review_picture = $_FILES['review_picture']['name'];
 						/*$file = addslashes(file_get_contents($_FILES["book_cover"]["tmp_name"]));
 						
 						$folder = 'Image/';*/
 						
 							//success store data and display message
 							$query = mysqli_query($store, "INSERT INTO review
-							(place_id, username, rating, description, picture, datetime) VALUES
-							('$place_id', '$username', '$rating', '$description', '$picture', '$datetime')");
+							(place_id, user_id, review_rating, review_type, review_description, review_picture, review_datetime) VALUES
+							('$place_id', '$user_id', '$review_rating', '$review_type','$review_description', '$review_picture', '$review_datetime')");
+							
+							
 							if ($query)
 							{
+								$query2 = mysqli_query($store, "SELECT AVG(review_rating) FROM review WHERE place_id =  '{$place_id}'");
+								
+								$count2 = mysqli_num_rows($query2);
+								
+								if ($count2)
+								{ 
+									while($row2 = mysqli_fetch_array($query2))
+									{
+										$avg = round($row2['AVG(review_rating)'],2);
+									}
+								}
+								
+								$update_rating = mysqli_query($store, "UPDATE place SET place_rating = '{$avg}' WHERE place_id = '{$place_id}' ");
+								
 								echo "<script>alert('Review accepted!');
-								window.location='index.php'</script>";
+								window.location='places.php'</script>";
 							}
 							else {
 								echo "<script>alert('Review declined!');
@@ -102,147 +131,96 @@ opacity: 0.4;
 						}
 					
 					}
-				
-				
-				include('header.php');
+   
 ?>
 
-	
-	<!-- Header Start -->
-    <div class="container-fluid page-header">
-        <div class="container">
-            <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-                <h3 class="display-4 text-white text-uppercase">Review</h3>
-                <div class="d-inline-flex text-white">
-                    <p class="m-0 text-uppercase"><a class="text-white" href="index.php">Home</a></p>
-                    <i class="fa fa-angle-double-right pt-1 px-3"></i>
-                    <p class="m-0 text-uppercase">Review</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-	
-	<!-- Register Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="text-center mb-3 pb-3">
-                <h1>Review</h1>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="contact-form bg-white" style="padding: 30px;">
-                        <div id="success"></div>
-						
-	<?php
-	
-	$place_id = $_GET['place_id'];
-	
-	//select all user data from database
-	$sql = "SELECT * FROM place WHERE place_id = '$place_id'";
-	$result = mysqli_query($store, $sql);
-	$row= mysqli_fetch_array($result, MYSQLI_ASSOC);
-	
-	//receive data
-	$place_name = $row['place_name'];
-	
-	?>
-	
-				
-                        <form method="post"  action="review.php" enctype="multipart/form-data">
-                            <div class="control-group">
-                                <input type="text" class="form-control p-4" id="place_name" name="place_name" value= "<?php echo $place_name ?>" style="text-transform: capitalize;" placeholder="Place Name" readonly />
-                            </div>
-							<br />
-							<div class="control-group">
-                                <div class="rating">
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+  </header>
   
-								  <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-								  <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-								  <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-								  <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-								  <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
 
-								</div>
-                            </div>
-							<br />
-							<div class="control-group">
-                                <input type="text" class="form-control p-4" id="description" name="description" value= "<?php if(isset($_POST["description"])) echo $_POST["description"]; ?>" placeholder="Description" />
-                            </div>
-							<br />
-							<div class="control-group">
-							    <label>Picture:</label>
-                                <input type="file" id="picture" name="picture" value= "<?php if(isset($_POST["picture"])) echo $_POST["picture"]; ?>" style="text-transform: capitalize;" placeholder="Picture" />
-                            </div>
-							<?php
-								echo "<input type='hidden' id='place_id' name='place_id' value='$place_id' />";
-							?>
-							<br /> <br />
-                            <div class="text-center">
-								<input class='btn-primary py-3 px-4' type='submit' name='submitted' value='Submit'/>
-								
-								<input type='hidden' name='submitted' value='true'/>
-								&emsp;
-								<a class='btn-primary py-3 px-4' href='index.html'>Cancel</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Register End -->
+   <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+	  <?php
+		$place_id = $_GET['place_id'];
+	  ?>
+	  <form method="post"  action="review.php" enctype="multipart/form-data">
+			<div class="container">
+			<div class="rate">
+  
+				<input type="radio" name="review_rating" value="5" id="5"><label for="5">☆</label>
+				<input type="radio" name="review_rating" value="4" id="4"><label for="4">☆</label>
+				<input type="radio" name="review_rating" value="3" id="3"><label for="3">☆</label>
+				<input type="radio" name="review_rating" value="2" id="2"><label for="2">☆</label>
+				<input type="radio" name="review_rating" value="1" id="1"><label for="1">☆</label>
+
+			</div>
+			
+			<label><b>Who Did You Go With?</b></label>
+
+			<select name="review_type" id="review_type" name="review_type">
+			  <option value="Solo">Solo</option>
+			  <option value="Couple">Couple</option>
+			  <option value="Family">Family</option>
+			  <option value="Friends">Friends</option>
+			  <option value="Colleagues">Colleagues</option>
+			</select><br /><br />
+			
+			<label><b>Description</b></label>
+			<input type="text" placeholder="Enter Description" id="review_description" name="review_description" value= "<?php if(isset($_POST["review_description"])) echo $_POST["review_description"]; ?>" required /><br /><br />
+			
+			<label><b>Picture:</b></label>
+            <input type="file" id="review_picture" name="review_picture" value= "<?php if(isset($_POST["review_picture"])) echo $_POST["review_picture"]; ?>" placeholder="Picture" required /><br /><br />
+			
+			<?php
+				echo "<input type='hidden' id='place_id' name='place_id' value='$place_id' />";
+			?>
+			
+			<button type="submit" name="submitted" value="Submit">Submit</button>
+			<input type="hidden" name="submitted" value="true"/>
+			</div>
+			
+			<div class="container">
+			<?php
+			echo"<button type='button' class='cancelbtn'><a href='placeInfo.php?place_id=$place_id' class='link'>Cancel</a></button>"
+			?>
+		  </div>
+		</form>
+		</div>
+			
+<?php
+	$query = mysqli_query($store, "SELECT * "
+            . "FROM place WHERE place_id =  '{$place_id}'");
+    $count = mysqli_num_rows($query);
 	
-	<script>
-		function showRangeValueRating(val){
-			document.getElementById('rate').value=val
-		}
-	
-	</script>
+	if ($count > 0)
+	{
+        while($row = mysqli_fetch_array($query))
+        {
+			
 
+          echo "<div class='w3-twothird'>";
+		        echo "<div class='picture'>";
+		        echo"<img src='img/".$row['place_picture']."' height='500' style='width:100%' />";
+				echo"<div class='top-left'><b>".$row['place_name']."</b></div>";
+				echo "<div class='bottom-left'><img src='img/".$row['place_ar']."' width='95' height='95' /><b>&nbsp;<mark style='background-color: white; color: black;'>Scan the QR Code to Learn More about ".$row['place_name']." in AR</mark></b></div>";
+				echo "</div>";
+				
 
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-white-50 py-5 px-sm-3 px-lg-5" style="margin-top: 90px;">
-        <div class="row pt-5">
-            <div class="col-lg-3 col-md-6 mb-5">
-                <a href="index.html" class="navbar-brand">
-                    <h1 class="text-primary"><span class="text-white">TOURISM</span>FY</h1>
-                </a>
-            </div>
-            
-        </div>
+          echo "</div>";
+	 		}
+	}
+?>
     </div>
-    <div class="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5" style="border-color: rgba(256, 256, 256, .1) !important;">
-        <div class="row">
-            <div class="col-lg-6 text-center text-md-left mb-3 mb-md-0">
-                <p class="m-0 text-white-50">Copyright &copy; <a href="#">TOURISMY</a>. All Rights Reserved.</a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
+  </div>
+  
+<?php
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
-</body>
-
-</html>
+   include('footer.php');
+   
+?>

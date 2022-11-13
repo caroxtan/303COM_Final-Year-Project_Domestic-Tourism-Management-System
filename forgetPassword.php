@@ -1,9 +1,7 @@
 <?php
-				
-				//align center
-				include("tourismfy_database.php");
-				
-				//if user click submit button
+
+			    include('header.php');
+			    //if user click submit button
 				if (isset($_POST['submitted'])) {
 					//variables declaration
 					$username = $_POST['username'];
@@ -75,102 +73,50 @@
 					
 					}
 				}
-				
-				include('header.php');
+   
 ?>
 
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-top:43px;">
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-address-card"></i> Reset Password</b></h5>
   </header>
 
-  <div class="w3-container">
-   <form action="forgetPassword.php" method="post">
+  <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+	  <form action="forgetPassword.php" method="post">
+	   <div class="container">
+		<label><b>Username</b></label>
+		<input type="text" placeholder="Enter Username" id="username" name="username" value= "<?php if(isset($_POST["username"])) echo $_POST["username"]; ?>" required />
 
-  <div class="container">
-    <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" id="username" name="username" required />
+		<label><b>Password</b></label>
+		<input type="password" placeholder="Enter Password" id="password" name="password" value= "<?php if(isset($_POST["password"])) echo $_POST["password"]; ?>" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "toggle()"></i>
+		
+		<label><b>Confirm Password</b></label>
+		<input type="password" placeholder="Enter Confirm Password" id="confirmPassword" name="confirmPassword" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "confirmToggle()"></i>
+		<button type="submit" name="submitted" value="Reset Password">Reset Password</button>
+		<input type="hidden" name="submitted" value="true"/>
+	  </div>
 
-    <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" id="password" name="password" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "toggle()"></i>
-	
-	<label><b>Confirm Password</b></label>
-	<input type="password" placeholder="Enter Confirm Password" id="confirmPassword" name="confirmPassword" required /><i class="fa fa-eye" id ="eye" style="margin-left: -30px; cursor: pointer;" onclick = "confirmToggle()"></i>
-    <button type="submit" name="submitted" value="Reset Password">Reset Password</button>
-	<input type="hidden" name="submitted" value="true"/>
-  </div>
-
-  <div class="container">
-    <button type="button" class="cancelbtn"><a href = "login.php" class="link">Cancel</a></button>
-  </div>
-</form>
-  </div>
-  <hr>
-
-  <br>
-  <div class="w3-container w3-dark-grey w3-padding-32">
-    <div class="w3-row">
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-        <p>Language</p>
-        <p>Country</p>
-        <p>City</p>
+	  <div class="container">
+		<button type="button" class="cancelbtn"><a href = "login.php" class="link">Cancel</a></button>
+	  </div>
+	</form>
       </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-red">System</h5>
-        <p>Browser</p>
-        <p>OS</p>
-        <p>More</p>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-orange">Target</h5>
-        <p>Users</p>
-        <p>Active</p>
-        <p>Geo</p>
-        <p>Interests</p>
+      <div class="w3-twothird">
+		<div class="picture">
+        <img src="img/The Top.jpg" width="815" height="456" />
+		<div class="top-left"><b>The Top Penang, Theme Park Penang</b></div>
+		<div class="bottom-left"><img src="img/The Top QR Code.png" width="95" height="95" /><b>&nbsp;<mark style="background-color: white; color: black;">Scan the QR Code to Learn More about The Top Penang, Theme Park Penang in AR</mark></b></div>
+		</div>
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-  </footer>
-
-  <!-- End page content -->
-</div>
-
+  
 <script>
-// Get the Sidebar
-var mySidebar = document.getElementById("mySidebar");
-
-// Get the DIV with overlay effect
-var overlayBg = document.getElementById("myOverlay");
-
-// Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-    overlayBg.style.display = "none";
-  } else {
-    mySidebar.style.display = 'block';
-    overlayBg.style.display = "block";
-  }
-}
-
-// Close the sidebar with the close button
-function w3_close() {
-  mySidebar.style.display = "none";
-  overlayBg.style.display = "none";
-}
-
 // Change the type of input to password or text 
 function toggle() 
 { 
@@ -183,21 +129,12 @@ function toggle()
 	{ 
 		temp.type = "password"; 
 	} 
-}
-
-function confirmToggle() 
-{ 
-	var temp = document.getElementById("confirmPassword"); 
-	if (temp.type === "password")
-	{ 
-		temp.type = "text"; 
-	} 
-	else 
-	{ 
-		temp.type = "password"; 
-	} 
-}
+} 
 </script>
 
-</body>
-</html>
+
+<?php
+
+   include('footer.php');
+   
+?>
